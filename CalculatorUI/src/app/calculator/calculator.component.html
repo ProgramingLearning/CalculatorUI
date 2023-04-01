@@ -1,0 +1,56 @@
+<div class="container-sm">
+  <h1 class="text-center">Estera's Calculator</h1>
+  <mat-card class="all-content">
+
+    <!--  <mat-card class="title">Angular Calculator</mat-card> -->
+    <mat-card class="messageLabel">
+      <mat-card-content>{{output}}</mat-card-content>
+    </mat-card>
+    <mat-card class="resultLabel">
+      <mat-card-content>{{input}}</mat-card-content>
+    </mat-card>
+    <mat-card class="calculatorButtons">
+      <div class="col-sm-12 p-1 m-0">
+        <button mat-raised-button class="op-buttons" (click)="pressDelete('CE')">CE</button>
+        <button mat-raised-button class="op-buttons" (click)="pressDelete('delete')">C</button>
+      </div>
+      <div class="col-sm-12 p-1 m-0">
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('MOD')">|x|</button>
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('^')">x^y</button>
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('rad')">rad</button>
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('/')">%</button>
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('M')">M</button>
+      </div>
+      <div class="col-sm-12 p-1 m-0">
+        <button mat-raised-button type="button" (click)="pressNum('7')">7</button>
+        <button mat-raised-button type="button" (click)="pressNum('8')">8</button>
+        <button mat-raised-button type="button" (click)="pressNum('9')">9</button>
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('*')">*</button>
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('OE')">OE</button>
+      </div>
+      <div class="col-sm-12 p-1 m-0">
+        <button mat-raised-button (click)="pressNum('4')">4</button>
+        <button mat-raised-button (click)="pressNum('5')">5</button>
+        <button mat-raised-button (click)="pressNum('6')">6</button>
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('-')">-</button>
+
+        
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('PRIME')">Np</button>
+      </div>
+      <div class="col-sm-12 p-1 m-0">
+        <button mat-raised-button (click)="pressNum('1')">1</button>
+        <button mat-raised-button (click)="pressNum('2')">2</button>
+        <button mat-raised-button (click)="pressNum('3')">3</button>
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('+')">+</button>
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('P')">P</button>
+      </div>
+      <div class="col-sm-12 p-1 m-0">
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('CS')">+/-</button>
+        <button mat-raised-button (click)="pressNum('0')">0</button>
+        <button mat-raised-button class="op-buttons" (click)="pressNum('.')">.</button>
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('RESULT')">=</button>
+        <button mat-raised-button class="op-buttons" (click)="pressOperation('SP')">SP</button>
+      </div>
+    </mat-card>
+  </mat-card>
+</div>
