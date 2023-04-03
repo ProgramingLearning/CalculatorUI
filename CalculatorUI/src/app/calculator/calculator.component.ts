@@ -8,60 +8,63 @@ import { HostListener, Component } from '@angular/core';
   styleUrls: ['./calculator.component.scss']
 })
 export class CalculatorComponent {
+  ngOnInit(): void {
+    this.input = '0';
+  }
   input: string = '';
   term: string = '';
   operation = '';
   output: string = '';
   opFlag: boolean = false;
+  minus: string = '-'
 
-  validateInput(input: string) {
-
-  }
   pressNum(num: string) {
+    if (this.opFlag == true) {
+      this.term = this.input;
+      this.input = '';
+      this.opFlag = false;
+      this.operation = '';
+    }
+   
     if (this.input.length < 15) {
-      if (this.opFlag == true) {
-        this.term = this.input;
-        this.input = '';
-        this.opFlag = false;
-      }
       if (num == '.') {
-        if (this.input.includes(".")) {
-          this.output = "nu mai adaug un punct nubo";
+        if (!this.input.includes(".")) {
+          if (this.input === '') {
+            this.input = this.input.concat('0', num);
+          }
+          else if (this.input === '0') {
+            this.input = this.input.concat(num);
+          }
+          else {
+            this.input = this.input.concat(num);
+          }
         }
-        else if (this.input === '') { this.input.concat("0",num) }
-        else {
-          this.input = this.input.concat(num);
-        }
-
       }
-
+      else if (this.input == '0') {
+        this.input = num;
+      }
       else {
         this.input = this.input.concat(num);
       }
-
-    }
-    else {
-      this.output = this.input;
-      console.log(num);
     }
   }
 
-  pressOperation(num: string) {
-    this.operation = num;
-    this.output = num;
+  pressOperation(op: string) {
+    this.operation = op;
+    this.output = op;
     this.opFlag = true;
-
   }
 
   pressDelete(num: string) {
     if (num == 'delete') {
-      this.input = this.input.slice(0, this.input.length - 1);
-    }
-    else if (num == 'CE') {
-      this.input = '';
+      this.input = '0';
       this.operation = '';
       this.output = '';
       this.opFlag = false;
+    }
+    else if (num == 'CE') {
+      this.input = '0';
+
     }
   }
   @HostListener('window:keydown.0', ['$event'])
