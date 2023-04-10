@@ -1,67 +1,59 @@
 
 .mat-mdc-card.all-content {
-
     width: fit-content;
     align-self: center;
     display: flex;
-    /* background-color: #1f1f24; */
 }
 
-
 .mat-mdc-card.title {
-
     font-size: xx-large;
     height: 30px;
     align-content: end;
     margin-top: 10px;
     margin-bottom: 10px;
     background-blend-mode: color;
-    /*  background-color: #d0bebe; */
     padding: 46px;
     align-items: center;
-
 }
-
-
-.calculatorButtons button {
+.mat-mdc-card.message-label{
+    height: 45px;
+}
+.calculator-buttons button {
     height: 47px;
-    width: 90px;
+    
     font-size: 17px;
     margin: 2px;
-    /* background-color: #1f1f24 */
 }
-
+.num-buttons{
+    width: 90px;
+}
 .op-buttons {
     background-color: rgb(163, 184, 243);
     color: #684c4c;
+    width: 90px;
 }
+.long-op-buttons {
+    background-color: rgb(163, 184, 243);
+    color: #684c4c;
+    width: 120px;
+}
+
 .mdc-button:hover {
     cursor: pointer;
-    /* background: #232324; */
 }
 
-
-.mat-mdc-card.calculatorButtons {
-
+.mat-mdc-card.calculator-buttons {
     display: flex;
     align-self: center;
     align-items: end;
 }
 
-
-
-.mat-mdc-card.messageLabel {
-
+.mat-mdc-card.message-label {
     font-size: larger;
     align-items: end;
- 
-
-
 }
 
-.mat-mdc-card.resultLabel {
-
+.mat-mdc-card.result-label {
     font-size: xx-large;
     align-items: end;
- 
 }

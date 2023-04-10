@@ -1,7 +1,6 @@
 import { HostListener, Component } from '@angular/core';
 
 
-
 @Component({
   selector: 'app-calculator',
   templateUrl: './calculator.component.html',
@@ -25,26 +24,37 @@ export class CalculatorComponent {
       this.opFlag = false;
       this.operation = '';
     }
-   
     if (this.input.length < 15) {
-      if (num == '.') {
-        if (!this.input.includes(".")) {
-          if (this.input === '') {
-            this.input = this.input.concat('0', num);
-          }
-          else if (this.input === '0') {
-            this.input = this.input.concat(num);
-          }
-          else {
-            this.input = this.input.concat(num);
-          }
-        }
-      }
-      else if (this.input == '0') {
+      if (this.input == '0') {
         this.input = num;
       }
       else {
         this.input = this.input.concat(num);
+      }
+    }
+  }
+
+  pressCS() {
+    if (this.input.includes('-')) {
+      this.input = this.input.slice(1);
+    }
+    else {
+      if (this.input != '0') {
+        this.input = '-' + this.input;
+      }
+    }
+  }
+
+  pressDot() {
+    if (!this.input.includes(".")) {
+      if (this.input === '') {
+        this.input = this.input.concat('0.');
+      }
+      else if (this.input === '0') {
+        this.input = this.input.concat('.');
+      }
+      else {
+        this.input = this.input.concat('.');
       }
     }
   }
@@ -55,23 +65,21 @@ export class CalculatorComponent {
     this.opFlag = true;
   }
 
-  pressDelete(num: string) {
-    if (num == 'delete') {
-      this.input = '0';
-      this.operation = '';
-      this.output = '';
-      this.opFlag = false;
-    }
-    else if (num == 'CE') {
-      this.input = '0';
-
-    }
+  pressDelete() {
+    this.input = '0';
+    this.operation = '';
+    this.output = '';
+    this.opFlag = false;
   }
+
+  pressClear() {
+    this.input = '0';
+  }
+
   @HostListener('window:keydown.0', ['$event'])
   on0KeyPress(event: KeyboardEvent) {
     this.pressNum('0');
   }
-
   @HostListener('window:keydown.1', ['$event'])
   on1KeyPress(event: KeyboardEvent) {
     this.pressNum('1');
@@ -88,7 +96,6 @@ export class CalculatorComponent {
   on4KeyPress(event: KeyboardEvent) {
     this.pressNum('4');
   }
-
   @HostListener('window:keydown.5', ['$event'])
   on5KeyPress(event: KeyboardEvent) {
     this.pressNum('5');
@@ -131,13 +138,12 @@ export class CalculatorComponent {
   }
   @HostListener('window:keydown.dot', ['$event'])
   onDotKeyPress(event: KeyboardEvent) {
-    this.pressNum('.');
+    this.pressDot();
   }
   @HostListener('window:keydown.backspace', ['$event'])
   onDelKeyPress(event: KeyboardEvent) {
-    this.pressDelete('delete');
+    this.pressDelete();
   }
-
 }
 
 
