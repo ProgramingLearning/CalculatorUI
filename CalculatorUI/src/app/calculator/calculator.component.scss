@@ -1,11 +1,4 @@
-
-.mat-mdc-card.all-content {
-    width: fit-content;
-    align-self: center;
-    display: flex;
-}
-
-.mat-mdc-card.title {
+.title {
     font-size: xx-large;
     height: 30px;
     align-content: end;
@@ -15,37 +8,27 @@
     padding: 46px;
     align-items: center;
 }
-.mat-mdc-card.message-label{
+
+.message-label {
     height: 45px;
 }
-.calculator-buttons button {
+.calculator-buttons button{
     height: 47px;
-    
+    width: 100%;
     font-size: 17px;
-    margin: 2px;
 }
-.num-buttons{
-    width: 90px;
-}
+
 .op-buttons {
     background-color: rgb(163, 184, 243);
-    color: #684c4c;
-    width: 90px;
+
 }
+
 .long-op-buttons {
     background-color: rgb(163, 184, 243);
-    color: #684c4c;
-    width: 120px;
 }
 
 .mdc-button:hover {
     cursor: pointer;
-}
-
-.mat-mdc-card.calculator-buttons {
-    display: flex;
-    align-self: center;
-    align-items: end;
 }
 
 .mat-mdc-card.message-label {
