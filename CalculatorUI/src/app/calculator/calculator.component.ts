@@ -50,9 +50,6 @@ export class CalculatorComponent {
       if (this.input === '') {
         this.input = this.input.concat('0.');
       }
-      else if (this.input === '0') {
-        this.input = this.input.concat('.');
-      }
       else {
         this.input = this.input.concat('.');
       }
