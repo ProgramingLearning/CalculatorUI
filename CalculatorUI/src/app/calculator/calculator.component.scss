@@ -1,0 +1,42 @@
+.title {
+    font-size: xx-large;
+    height: 30px;
+    align-content: end;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-blend-mode: color;
+    padding: 46px;
+    align-items: center;
+}
+
+.message-label {
+    height: 45px;
+}
+.calculator-buttons button{
+    height: 47px;
+    width: 100%;
+    font-size: 17px;
+}
+
+.op-buttons {
+    background-color: rgb(163, 184, 243);
+
+}
+
+.long-op-buttons {
+    background-color: rgb(163, 184, 243);
+}
+
+.mdc-button:hover {
+    cursor: pointer;
+}
+
+.mat-mdc-card.message-label {
+    font-size: larger;
+    align-items: end;
+}
+
+.mat-mdc-card.result-label {
+    font-size: xx-large;
+    align-items: end;
+}

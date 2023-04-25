@@ -1,0 +1,127 @@
+<div class="container-sm">
+  <!-- <h1 class="text-center">Estera's Calculator</h1> -->
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="title">Estera's Calculator</mat-card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="message-label">
+        <mat-card-content>{{output}}</mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="result-label">
+        <mat-card-content>{{input}}</mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <mat-card class="calculator-buttons">
+        <div class="row">
+          <div class="col-sm-6 p-3 m-0"></div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressClear()">CE</button>
+          </div>
+          <div class="col-sm-4 p-1 m-0">
+            <button mat-stroked-button color="primary" class="long-op-buttons" (click)="pressDelete()">Clear</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('MOD')">|x|</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('^')">x^y</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('√')">√x</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('/')">÷</button>
+          </div>
+          <div class="col-sm-4 p-1 m-0">
+            <button mat-stroked-button color="primary" class="long-op-buttons"
+              (click)="pressOperation('M')">Mirror</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('7')">7</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('8')">8</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('9')">9</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('*')">*</button>
+          </div>
+          <div class="col-sm-4 p-1 m-0">
+            <button mat-stroked-button color="primary" class="long-op-buttons"
+              (click)="pressOperation('OE')">Odd/Even</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('4')">4</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('5')">5</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('6')">6</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('-')">-</button>
+          </div>
+          <div class="col-sm-4 p-1 m-0">
+            <button mat-stroked-button color="primary" class="long-op-buttons" (click)="pressOperation('PRIME')">Is
+              Prime?</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('1')">1</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('2')">2</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('3')">3</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('+')">+</button>
+          </div>
+          <div class="col-sm-4 p-1 m-0">
+            <button mat-stroked-button color="primary" class="long-op-buttons"
+              (click)="pressOperation('P')">Palindrome</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressCS()">+/-</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('0')">0</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressDot()">.</button>
+          </div>
+          <div class="col-sm-2 p-1 m-0">
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('RESULT')">=</button>
+          </div>
+          <div class="col-sm-4 p-1 m-0">
+            <button mat-stroked-button color="primary" class="long-op-buttons" (click)="pressOperation('SP')">Super
+              Palindrome</button>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
