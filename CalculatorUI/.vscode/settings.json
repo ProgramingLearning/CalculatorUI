@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/c01999a8-4c38-4357-889a-269604e742a1/resourceGroups/ARPS/providers/Microsoft.Web/sites/CalculatorAppARPS",
+    "appService.deploySubpath": "."
+}

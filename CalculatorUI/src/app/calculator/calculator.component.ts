@@ -1,4 +1,6 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { HostListener, Component } from '@angular/core';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-calculator',
@@ -12,17 +14,54 @@ export class CalculatorComponent {
   }
   input: string = '';
   term: string = '';
+  termList: string[] = [];
   operation = '';
   output: string = '';
+  result: string = '';
+  minus: string = '-';
+  btnclicked = '';
   opFlag: boolean = false;
-  minus: string = '-'
+
+  constructor(private http: HttpClient) { }
+  private apiUrlMT = "https://calculatorarps.azurewebsites.net/api/calculator/multipletermoperation";
+  private apiUrlST = "https://calculatorarps.azurewebsites.net/api/calculator/multipletermoperation";
+
+  public multipleTerm() {
+    let params = new HttpParams().set('ButtonClicked', this.term + "_=");
+    params = params.set('CalculatorState.Terms', this.termList[0]);
+    for (let i = 1; i < this.termList.length; i++) {
+      params = params.append('CalculatorState.Terms', this.termList[i]);
+    }
+    params = params.set('CalculatorState.CurrentOperation', this.operation);
+    this.http.get<any>(this.apiUrlMT, { params: params }).pipe(map(value => value.calculatorResult)).subscribe((value: any) => {
+      this.output = value.message;
+      this.input = value.value;
+      
+    });
+  }
+
+  public singleTerm() {
+    let params = new HttpParams().set('ButtonClicked', this.term + "_=");
+    params = params.set('CalculatorState.CurrentOperation', this.operation);
+    this.http.get<any>(this.apiUrlST, { params: params }).pipe(map(value => value.calculatorResult)).subscribe((value: any) => {
+      this.output = value.message;
+      this.input = value.value;
+      this.term=this.input;
+      this.termList.length=0;
+      this.termList.push(this.term)
+      this.opFlag=false;
+    });
+  }
+
+  pressEqual(){
+    this.term = this.input;
+    this.multipleTerm(); 
+  }
 
   pressNum(num: string) {
-    if (this.opFlag == true) {
-      this.term = this.input;
+    if (this.opFlag){
       this.input = '';
-      this.opFlag = false;
-      this.operation = '';
+      this.opFlag= false;
     }
     if (this.input.length < 15) {
       if (this.input == '0') {
@@ -57,16 +96,34 @@ export class CalculatorComponent {
   }
 
   pressOperation(op: string) {
+    this.opFlag = true;
+    this.term = this.input;
+    if (this.operation ===''){
+      this.termList.push(this.term);
+    }
+    if (op == this.operation) {
+      this.termList.push(this.term);
+    }
+    else{
+      this.multipleTerm(); 
+    }
     this.operation = op;
     this.output = op;
+  }
+  
+  pressSTOperation(op: string) {
     this.opFlag = true;
+    this.term = this.input;
+    this.operation = op;
+    this.output = op;
+    this.singleTerm()
   }
 
   pressDelete() {
     this.input = '0';
     this.operation = '';
     this.output = '';
-    this.opFlag = false;
+    this.termList.length=0;
   }
 
   pressClear() {
