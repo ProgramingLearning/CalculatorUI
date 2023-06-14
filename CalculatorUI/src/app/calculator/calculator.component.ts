@@ -17,13 +17,11 @@ export class CalculatorComponent {
   termList: string[] = [];
   operation = '';
   output: string = '';
-  result: string = '';
   minus: string = '-';
-  btnclicked = '';
   opFlag: boolean = false;
 
   constructor(private http: HttpClient) { }
-  private apiUrlMT = "https://calculatorarps.azurewebsites.net/api/calculator/multipletermoperation";
+  private apiUrlMT = "https://localhost:7172/api/calculator/multipletermoperation";
   private apiUrlST = "https://calculatorarps.azurewebsites.net/api/calculator/multipletermoperation";
 
   public multipleTerm() {
@@ -36,7 +34,8 @@ export class CalculatorComponent {
     this.http.get<any>(this.apiUrlMT, { params: params }).pipe(map(value => value.calculatorResult)).subscribe((value: any) => {
       this.output = value.message;
       this.input = value.value;
-      
+      this.termList.length=0;
+      this.termList.push(this.input)
     });
   }
 
@@ -46,16 +45,16 @@ export class CalculatorComponent {
     this.http.get<any>(this.apiUrlST, { params: params }).pipe(map(value => value.calculatorResult)).subscribe((value: any) => {
       this.output = value.message;
       this.input = value.value;
-      this.term=this.input;
       this.termList.length=0;
-      this.termList.push(this.term)
-      this.opFlag=false;
+      this.termList.push(this.input)
     });
   }
 
   pressEqual(){
     this.term = this.input;
-    this.multipleTerm(); 
+    this.multipleTerm();
+    this.operation = '';
+    this.opFlag= true;
   }
 
   pressNum(num: string) {
@@ -98,25 +97,23 @@ export class CalculatorComponent {
   pressOperation(op: string) {
     this.opFlag = true;
     this.term = this.input;
+    this.output = op;
     if (this.operation ===''){
-      this.termList.push(this.term);
-    }
-    if (op == this.operation) {
-      this.termList.push(this.term);
+      this.termList.length=0;
+      this.termList.push(this.input)
     }
     else{
       this.multipleTerm(); 
     }
     this.operation = op;
-    this.output = op;
   }
   
   pressSTOperation(op: string) {
     this.opFlag = true;
     this.term = this.input;
     this.operation = op;
-    this.output = op;
     this.singleTerm()
+    this.operation = '';
   }
 
   pressDelete() {
