@@ -1,4 +1,4 @@
 export interface iResult {
-    output: string;
-    outputMessage: string; 
+    message: string;
+    value: string; 
 }

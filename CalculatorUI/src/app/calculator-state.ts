@@ -1,5 +1,10 @@
-export interface iCalculatorState {
-    [key: string]: string | number | boolean | readonly (string | number | boolean)[];
+export interface iCalculatorInputMT {
+    term: string;
     operation: string;
-    term: string[];
+    termList: string[];
+}
+
+export interface iCalculatorInputST {
+    term: string;
+    operation: string;
 }

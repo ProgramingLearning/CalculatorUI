@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { HostListener, Component } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { ResultService } from '../result.service';
+import { iCalculatorInputMT, iCalculatorInputST } from '../calculator-state';
 
 @Component({
   selector: 'app-calculator',
@@ -22,9 +23,15 @@ export class CalculatorComponent {
   opFlag: boolean = false;
 
   constructor(private resultService: ResultService) { }
-  
+
   calculateMT() {
-    this.resultService.multipleTerm(this.term, this.termList, this.operation).subscribe(
+    const input: iCalculatorInputMT = {
+      term: this.term,
+      termList: this.termList,
+      operation: this.operation
+    };
+
+    this.resultService.multipleTerm(input).subscribe(
       (value: any) => {
         this.output = value.message;
         this.input = value.value;
@@ -37,7 +44,12 @@ export class CalculatorComponent {
     );
   }
   calculateST() {
-    this.resultService.singleTerm(this.term, this.operation).subscribe(
+    const input: iCalculatorInputST = {
+      term: this.term,
+      operation: this.operation
+    };
+
+    this.resultService.singleTerm(input).subscribe(
       (value: any) => {
         this.output = value.message;
         this.input = value.value;
@@ -49,38 +61,6 @@ export class CalculatorComponent {
       }
     );
   }
-
-  // public multipleTerm() {
-  //   let params = new HttpParams()
-  //     .set('ButtonClicked', `${this.term}_=`)
-  //     .set('CalculatorState.CurrentOperation', this.operation);
-  
-  //   for (const term of this.termList) {
-  //     params = params.append('CalculatorState.Terms', term);
-  //   }
-  
-  //   this.http.get<any>(this.apiUrlMT, { params }).pipe(
-  //     map(value => value.calculatorResult)
-  //   ).subscribe((value: any) => {
-  //     this.output = value.message;
-  //     this.input = value.value;
-  //     this.clearTermList();
-  //     this.termList.push(this.input);
-  //   });
-  // }
-  
-
-
-  // public singleTerm() {
-  //   let params = new HttpParams().set('ButtonClicked', this.term + "_=");
-  //   params = params.set('CalculatorState.CurrentOperation', this.operation);
-  //   this.http.get<any>(this.apiUrlST, { params: params }).pipe(map(value => value.calculatorResult)).subscribe((value: any) => {
-  //     this.output = value.message;
-  //     this.input = value.value;
-  //     this.termList.length=0;
-  //     this.termList.push(this.input)
-  //   });
-  // }
 
   pressEqual(){
     this.term = this.input;
