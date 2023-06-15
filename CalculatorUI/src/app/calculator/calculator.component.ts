@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { HostListener, Component } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { ResultService } from '../result.service';
 
 @Component({
   selector: 'app-calculator',
@@ -20,39 +21,70 @@ export class CalculatorComponent {
   minus: string = '-';
   opFlag: boolean = false;
 
-  constructor(private http: HttpClient) { }
-  private apiUrlMT = "https://localhost:7172/api/calculator/multipletermoperation";
-  private apiUrlST = "https://calculatorarps.azurewebsites.net/api/calculator/multipletermoperation";
-
-  public multipleTerm() {
-    let params = new HttpParams().set('ButtonClicked', this.term + "_=");
-    params = params.set('CalculatorState.Terms', this.termList[0]);
-    for (let i = 1; i < this.termList.length; i++) {
-      params = params.append('CalculatorState.Terms', this.termList[i]);
-    }
-    params = params.set('CalculatorState.CurrentOperation', this.operation);
-    this.http.get<any>(this.apiUrlMT, { params: params }).pipe(map(value => value.calculatorResult)).subscribe((value: any) => {
-      this.output = value.message;
-      this.input = value.value;
-      this.termList.length=0;
-      this.termList.push(this.input)
-    });
+  constructor(private resultService: ResultService) { }
+  
+  calculateMT() {
+    this.resultService.multipleTerm(this.term, this.termList, this.operation).subscribe(
+      (value: any) => {
+        this.output = value.message;
+        this.input = value.value;
+        this.clearTermList();
+        this.termList.push(this.input);
+      },
+      (error: any) => {
+        // Handle the error
+      }
+    );
+  }
+  calculateST() {
+    this.resultService.singleTerm(this.term, this.operation).subscribe(
+      (value: any) => {
+        this.output = value.message;
+        this.input = value.value;
+        this.clearTermList();
+        this.termList.push(this.input);
+      },
+      (error: any) => {
+        // Handle the error
+      }
+    );
   }
 
-  public singleTerm() {
-    let params = new HttpParams().set('ButtonClicked', this.term + "_=");
-    params = params.set('CalculatorState.CurrentOperation', this.operation);
-    this.http.get<any>(this.apiUrlST, { params: params }).pipe(map(value => value.calculatorResult)).subscribe((value: any) => {
-      this.output = value.message;
-      this.input = value.value;
-      this.termList.length=0;
-      this.termList.push(this.input)
-    });
-  }
+  // public multipleTerm() {
+  //   let params = new HttpParams()
+  //     .set('ButtonClicked', `${this.term}_=`)
+  //     .set('CalculatorState.CurrentOperation', this.operation);
+  
+  //   for (const term of this.termList) {
+  //     params = params.append('CalculatorState.Terms', term);
+  //   }
+  
+  //   this.http.get<any>(this.apiUrlMT, { params }).pipe(
+  //     map(value => value.calculatorResult)
+  //   ).subscribe((value: any) => {
+  //     this.output = value.message;
+  //     this.input = value.value;
+  //     this.clearTermList();
+  //     this.termList.push(this.input);
+  //   });
+  // }
+  
+
+
+  // public singleTerm() {
+  //   let params = new HttpParams().set('ButtonClicked', this.term + "_=");
+  //   params = params.set('CalculatorState.CurrentOperation', this.operation);
+  //   this.http.get<any>(this.apiUrlST, { params: params }).pipe(map(value => value.calculatorResult)).subscribe((value: any) => {
+  //     this.output = value.message;
+  //     this.input = value.value;
+  //     this.termList.length=0;
+  //     this.termList.push(this.input)
+  //   });
+  // }
 
   pressEqual(){
     this.term = this.input;
-    this.multipleTerm();
+    this.calculateMT();
     this.operation = '';
     this.opFlag= true;
   }
@@ -103,7 +135,7 @@ export class CalculatorComponent {
       this.termList.push(this.input)
     }
     else{
-      this.multipleTerm(); 
+      this.calculateMT(); 
     }
     this.operation = op;
   }
@@ -112,10 +144,13 @@ export class CalculatorComponent {
     this.opFlag = true;
     this.term = this.input;
     this.operation = op;
-    this.singleTerm()
+    this.calculateST()
     this.operation = '';
   }
 
+  private clearTermList() {
+    this.termList.length = 0;
+  }
   pressDelete() {
     this.input = '0';
     this.operation = '';
