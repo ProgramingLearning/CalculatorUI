@@ -1,10 +1,5 @@
-export interface iCalculatorInputMT {
+export interface iCalculatorInput {
     term: string;
     operation: string;
-    termList: string[];
-}
-
-export interface iCalculatorInputST {
-    term: string;
-    operation: string;
+    termList?: string[];
 }

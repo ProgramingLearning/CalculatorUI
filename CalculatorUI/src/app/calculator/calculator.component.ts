@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { HostListener, Component } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { ResultService } from '../result.service';
-import { iCalculatorInputMT, iCalculatorInputST } from '../calculator-state';
+import { CalculatorApiService } from '../calculator-api.service';
+import { iCalculatorInput} from '../calculator-state';
+import { iCalculatorResult } from '../result';
 
 @Component({
   selector: 'app-calculator',
@@ -22,46 +23,47 @@ export class CalculatorComponent {
   minus: string = '-';
   opFlag: boolean = false;
 
-  constructor(private resultService: ResultService) { }
+  constructor(private apiService: CalculatorApiService) { }
+  private apiUrlMT = "https://calculatorarps.azurewebsites.net/api/calculator/multipletermoperation";
+  private apiUrlST = "https://calculatorarps.azurewebsites.net/api/calculator/singletermoperation";
+  // private apiUrlST = "https://localhost:7172/api/calculator/multipletermoperation";
+  // private apiUrlMT = "https://calculatorarps.azurewebsites.net/api/calculator/multipletermoperation";
 
   calculateMT() {
-    const input: iCalculatorInputMT = {
+    const input: iCalculatorInput = {
       term: this.term,
       termList: this.termList,
       operation: this.operation
     };
 
-    this.resultService.multipleTerm(input).subscribe(
-      (value: any) => {
-        this.output = value.message;
-        this.input = value.value;
-        this.clearTermList();
-        this.termList.push(this.input);
+    this.apiService.calculateMultipleTerm(input, this.apiUrlMT).subscribe(
+      (result: iCalculatorResult) => {
+        this.output = result.message;
+        this.input = result.value;
+        this.addResultToTermList();
       },
-      (error: any) => {
-        // Handle the error
-      }
     );
   }
+
   calculateST() {
-    const input: iCalculatorInputST = {
+    const input: iCalculatorInput= {
       term: this.term,
       operation: this.operation
     };
 
-    this.resultService.singleTerm(input).subscribe(
+    this.apiService.calculateSingleTerm(input, this.apiUrlST).subscribe(
       (value: any) => {
         this.output = value.message;
         this.input = value.value;
-        this.clearTermList();
-        this.termList.push(this.input);
+        this.addResultToTermList();
       },
-      (error: any) => {
-        // Handle the error
-      }
     );
   }
 
+  private addResultToTermList() {
+    this.clearTermList();
+    this.termList.push(this.input);
+  }
   pressEqual(){
     this.term = this.input;
     this.calculateMT();
@@ -131,6 +133,7 @@ export class CalculatorComponent {
   private clearTermList() {
     this.termList.length = 0;
   }
+  
   pressDelete() {
     this.input = '0';
     this.operation = '';
