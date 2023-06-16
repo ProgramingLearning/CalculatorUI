@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { HostListener, Component } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { CalculatorApiService } from '../calculator-api.service';
-import { iCalculatorInput} from '../calculator-state';
+import { iCalculatorInput } from '../calculator-state';
 import { iCalculatorResult } from '../result';
 
 @Component({
@@ -35,46 +35,50 @@ export class CalculatorComponent {
       termList: this.termList,
       operation: this.operation
     };
-
     this.apiService.calculateMultipleTerm(input, this.apiUrlMT).subscribe(
       (result: iCalculatorResult) => {
-        this.output = result.message;
-        this.input = result.value;
+        this.updateUIwithResult(result);
         this.addResultToTermList();
       },
     );
   }
 
   calculateST() {
-    const input: iCalculatorInput= {
+    const input: iCalculatorInput = {
       term: this.term,
       operation: this.operation
     };
-
     this.apiService.calculateSingleTerm(input, this.apiUrlST).subscribe(
-      (value: any) => {
-        this.output = value.message;
-        this.input = value.value;
+      (result: iCalculatorResult) => {
+        this.updateUIwithResult(result);
         this.addResultToTermList();
       },
     );
+  }
+
+  private updateUIwithResult(result: iCalculatorResult) {
+    this.output = result.message;
+    this.input = result.value;
   }
 
   private addResultToTermList() {
     this.clearTermList();
     this.termList.push(this.input);
   }
-  pressEqual(){
+
+  pressEqual() {
     this.term = this.input;
-    this.calculateMT();
+    if (this.operation != '' ){
+      this.calculateMT();
+    }
     this.operation = '';
-    this.opFlag= true;
+    this.opFlag = true;
   }
 
   pressNum(num: string) {
-    if (this.opFlag){
+    if (this.opFlag) {
       this.input = '';
-      this.opFlag= false;
+      this.opFlag = false;
     }
     if (this.input.length < 15) {
       if (this.input == '0') {
@@ -112,16 +116,16 @@ export class CalculatorComponent {
     this.opFlag = true;
     this.term = this.input;
     this.output = op;
-    if (this.operation ===''){
-      this.termList.length=0;
+    if (this.operation === '') {
+      this.termList.length = 0;
       this.termList.push(this.input)
     }
-    else{
-      this.calculateMT(); 
+    else {
+      this.calculateMT();
     }
     this.operation = op;
   }
-  
+
   pressSTOperation(op: string) {
     this.opFlag = true;
     this.term = this.input;
@@ -133,12 +137,12 @@ export class CalculatorComponent {
   private clearTermList() {
     this.termList.length = 0;
   }
-  
+
   pressDelete() {
     this.input = '0';
     this.operation = '';
     this.output = '';
-    this.termList.length=0;
+    this.termList.length = 0;
   }
 
   pressClear() {

@@ -22,6 +22,7 @@ export class CalculatorApiService {
     params = params.set('CalculatorState.CurrentOperation', input.operation);
     return this.http.get<any>(apiUrl, { params }).pipe(
       map(value => value.calculatorResult),
+     
     );
   }
 
@@ -29,6 +30,11 @@ export class CalculatorApiService {
     let params = new HttpParams().set('ButtonClicked', `${input.term}_${input.operation}`);
     return this.http.get<any>(apiUrl, { params }).pipe(
       map(value => value.calculatorResult),
+      catchError(error => {
+        // Handle error appropriately or re-throw the error
+        console.error('API request error:', error);
+        throw error;
+      })
     );
   }
 
