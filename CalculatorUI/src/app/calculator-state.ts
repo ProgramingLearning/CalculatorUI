@@ -1,5 +1,5 @@
-export interface iCalculatorInput {
+export interface iCalculatorState { 
     term: string;
-    operation: string;
-    termList?: string[];
+    currentOperation: string;
+    terms: string[];
 }

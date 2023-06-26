@@ -1,9 +1,11 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { HostListener, Component } from '@angular/core';
-import { Observable, map } from 'rxjs';
 import { CalculatorApiService } from '../calculator-api.service';
-import { iCalculatorInput } from '../calculator-state';
-import { iCalculatorResult } from '../result';
+import { iCalculatorState } from '../calculator-state';
+import { iCalculatorResultST, iCalculatorResultMT } from '../result';
+import { iCalculatorResponseMT, iCalculatorResponseST } from '../calculator-response';
+import { iCalculatorRequest, iCalculatorRequestST } from '../calculator-request';
+// import { iCalculatorResult } from '../result';
 
 @Component({
   selector: 'app-calculator',
@@ -16,65 +18,65 @@ export class CalculatorComponent {
     this.input = '0';
   }
   input: string = '';
-  term: string = '';
-  termList: string[] = [];
-  operation = '';
   output: string = '';
-  minus: string = '-';
   opFlag: boolean = false;
+  state : iCalculatorState = {}as any;
 
   constructor(private apiService: CalculatorApiService) { }
-  private apiUrlMT = "https://calculatorarps.azurewebsites.net/api/calculator/multipletermoperation";
-  private apiUrlST = "https://calculatorarps.azurewebsites.net/api/calculator/singletermoperation";
-  // private apiUrlST = "https://localhost:7172/api/calculator/multipletermoperation";
-  // private apiUrlMT = "https://calculatorarps.azurewebsites.net/api/calculator/multipletermoperation";
 
-  calculateMT() {
-    const input: iCalculatorInput = {
-      term: this.term,
-      termList: this.termList,
-      operation: this.operation
+  pressEqual() {
+    const request : iCalculatorRequest = {
+      state : this.state,
+      buttonClicked : `${this.input}_=` 
     };
-    this.apiService.calculateMultipleTerm(input, this.apiUrlMT).subscribe(
-      (result: iCalculatorResult) => {
-        this.updateUIwithResult(result);
-        this.addResultToTermList();
+    this.apiService.calculateMultipleTerm(request).subscribe(
+      (response: iCalculatorResponseMT) => {
+        this.state = response.calculatorState;
+        if (response.calculatorResult != null){
+          this.handleResultMT(response.calculatorResult);
+        }
       },
     );
   }
 
-  calculateST() {
-    const input: iCalculatorInput = {
-      term: this.term,
-      operation: this.operation
+  pressMTOperation(op: string) {
+    this.opFlag = true;
+    const request : iCalculatorRequest = {
+      state : this.state,
+      buttonClicked : `${this.input}_${op}` 
     };
-    this.apiService.calculateSingleTerm(input, this.apiUrlST).subscribe(
-      (result: iCalculatorResult) => {
-        this.updateUIwithResult(result);
-        this.addResultToTermList();
+    this.apiService.calculateMultipleTerm(request).subscribe(
+      (response: iCalculatorResponseMT) => {
+        this.state = response.calculatorState;
+        if (response.calculatorResult){
+          console.log(response.calculatorResult);
+          this.handleResultMT(response.calculatorResult);
+        }
       },
     );
   }
 
-  private updateUIwithResult(result: iCalculatorResult) {
+  pressSTOperation(op: string) {
+    this.opFlag = true;
+    const request: iCalculatorRequestST = {
+      buttonClicked : `${this.input}_${op}`
+    };
+    this.apiService.calculateSingleTerm(request).subscribe(
+      (response: iCalculatorResponseST) => {
+        this.handleResultST(response.calculatorResult);
+      },
+    );
+  }
+
+  private handleResultMT(result: iCalculatorResultMT) {
     this.output = result.message;
     this.input = result.value;
   }
-
-  private addResultToTermList() {
-    this.clearTermList();
-    this.termList.push(this.input);
+  private handleResultST(result: iCalculatorResultST) {
+    this.output = result.message;
+    this.input = result.value;
   }
-
-  pressEqual() {
-    this.term = this.input;
-    if (this.operation != '' ){
-      this.calculateMT();
-    }
-    this.operation = '';
-    this.opFlag = true;
-  }
-
+  
   pressNum(num: string) {
     if (this.opFlag) {
       this.input = '';
@@ -112,37 +114,9 @@ export class CalculatorComponent {
     }
   }
 
-  pressOperation(op: string) {
-    this.opFlag = true;
-    this.term = this.input;
-    this.output = op;
-    if (this.operation === '') {
-      this.termList.length = 0;
-      this.termList.push(this.input)
-    }
-    else {
-      this.calculateMT();
-    }
-    this.operation = op;
-  }
-
-  pressSTOperation(op: string) {
-    this.opFlag = true;
-    this.term = this.input;
-    this.operation = op;
-    this.calculateST()
-    this.operation = '';
-  }
-
-  private clearTermList() {
-    this.termList.length = 0;
-  }
-
   pressDelete() {
     this.input = '0';
-    this.operation = '';
     this.output = '';
-    this.termList.length = 0;
   }
 
   pressClear() {
@@ -191,23 +165,23 @@ export class CalculatorComponent {
   }
   @HostListener('window:keydown.+', ['$event'])
   onplusKeyPress(event: KeyboardEvent) {
-    this.pressOperation('+');
+    this.pressMTOperation('+');
   }
   @HostListener('window:keydown.-', ['$event'])
   onMinusKeyPress(event: KeyboardEvent) {
-    this.pressOperation('-');
+    this.pressMTOperation('-');
   }
   @HostListener('window:keydown./', ['$event'])
   onDivKeyPress(event: KeyboardEvent) {
-    this.pressOperation('/');
+    this.pressMTOperation('/');
   }
   @HostListener('window:keydown.*', ['$event'])
   onMultKeyPress(event: KeyboardEvent) {
-    this.pressOperation('*');
+    this.pressMTOperation('*');
   }
   @HostListener('window:keydown.Enter', ['$event'])
   onEnterKeyPress(event: KeyboardEvent) {
-    this.pressOperation('=');
+    this.pressMTOperation('=');
   }
   @HostListener('window:keydown.dot', ['$event'])
   onDotKeyPress(event: KeyboardEvent) {

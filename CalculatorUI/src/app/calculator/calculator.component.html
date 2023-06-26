@@ -36,13 +36,13 @@
             <button mat-stroked-button color="primary" class="op-buttons" (click)="pressSTOperation('AbsoluteValue')">|x|</button>
           </div>
           <div class="col-sm-2 p-1 m-0">
-            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('Power')">x^y</button>
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressMTOperation('Power')">x^y</button>
           </div>
           <div class="col-sm-2 p-1 m-0">
             <button mat-stroked-button color="primary" class="op-buttons" (click)="pressSTOperation('SquareRoot')">√x</button>
           </div>
           <div class="col-sm-2 p-1 m-0">
-            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('Divide')">÷</button>
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressMTOperation('Divide')">÷</button>
           </div>
           <div class="col-sm-4 p-1 m-0">
             <button mat-stroked-button color="primary" class="long-op-buttons"
@@ -60,7 +60,7 @@
             <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('9')">9</button>
           </div>
           <div class="col-sm-2 p-1 m-0">
-            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('Multiply')">*</button>
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressMTOperation('Multiply')">*</button>
           </div>
           <div class="col-sm-4 p-1 m-0">
             <button mat-stroked-button color="primary" class="long-op-buttons"
@@ -78,7 +78,7 @@
             <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('6')">6</button>
           </div>
           <div class="col-sm-2 p-1 m-0">
-            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('Subtract')">-</button>
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressMTOperation('Subtract')">-</button>
           </div>
           <div class="col-sm-4 p-1 m-0">
             <button mat-stroked-button color="primary" class="long-op-buttons" (click)="pressSTOperation('IsPrime')">Is
@@ -96,7 +96,7 @@
             <button mat-raised-button color="link" class="num-buttons" (click)="pressNum('3')">3</button>
           </div>
           <div class="col-sm-2 p-1 m-0">
-            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressOperation('Sum')">+</button>
+            <button mat-stroked-button color="primary" class="op-buttons" (click)="pressMTOperation('Sum')">+</button>
           </div>
           <div class="col-sm-4 p-1 m-0">
             <button mat-stroked-button color="primary" class="long-op-buttons"
