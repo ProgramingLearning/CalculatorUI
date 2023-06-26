@@ -4,7 +4,7 @@ import { ɵHammerGesturesPlugin } from '@angular/platform-browser';
 import { iCalculatorInput } from './calculator-state';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
-import { iCalculatorResult } from './result';
+import { iCalculatorResultST , iCalculatorResultMT} from './result';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ import { iCalculatorResult } from './result';
 export class CalculatorApiService {
   constructor(private http: HttpClient) {}
 
-  calculateMultipleTerm(input: iCalculatorInput, apiUrl: string): Observable<iCalculatorResult> {
+  calculateMultipleTerm(input: iCalculatorInput, apiUrl: string): Observable<iCalculatorResultMT> {
     let params = new HttpParams().set('ButtonClicked', `${input.term}_=`);
     if (input.termList) {
       for (const termItem of input.termList) {
@@ -26,7 +26,7 @@ export class CalculatorApiService {
     );
   }
 
-  calculateSingleTerm(input: iCalculatorInput, apiUrl: string): Observable<iCalculatorResult> {
+  calculateSingleTerm(input: iCalculatorInput, apiUrl: string): Observable<iCalculatorResultST> {
     let params = new HttpParams().set('ButtonClicked', `${input.term}_${input.operation}`);
     return this.http.get<any>(apiUrl, { params }).pipe(
       map(value => value.calculatorResult),
