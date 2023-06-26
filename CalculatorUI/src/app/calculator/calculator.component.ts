@@ -25,34 +25,27 @@ export class CalculatorComponent {
   constructor(private apiService: CalculatorApiService) { }
 
   pressEqual() {
-    const request : iCalculatorRequest = {
-      state : this.state,
-      buttonClicked : `${this.input}_=` 
-    };
-    this.apiService.calculateMultipleTerm(request).subscribe(
-      (response: iCalculatorResponseMT) => {
-        this.state = response.calculatorState;
-        if (response.calculatorResult != null){
-          this.handleResultMT(response.calculatorResult);
-        }
-      },
-    );
+    this.CalculateMT("=");
   }
 
   pressMTOperation(op: string) {
+    this.CalculateMT(op);
+  }
+
+  private CalculateMT(op: string) {
     this.opFlag = true;
-    const request : iCalculatorRequest = {
-      state : this.state,
-      buttonClicked : `${this.input}_${op}` 
+    const request: iCalculatorRequest = {
+      state: this.state,
+      buttonClicked: `${this.input}_${op}`
     };
     this.apiService.calculateMultipleTerm(request).subscribe(
       (response: iCalculatorResponseMT) => {
         this.state = response.calculatorState;
-        if (response.calculatorResult){
+        if (response.calculatorResult) {
           console.log(response.calculatorResult);
           this.handleResultMT(response.calculatorResult);
         }
-      },
+      }
     );
   }
 
