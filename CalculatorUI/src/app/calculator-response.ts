@@ -1,11 +1,11 @@
-import { iCalculatorState } from "./calculator-state";
-import { iCalculatorResultMT,iCalculatorResultST } from "./result";
+import { CalculatorState } from "./calculator-state";
+import { CalculatorResultMT, CalculatorResultST } from "./calculator-result";
 
-export interface iCalculatorResponseMT{
-    calculatorState: iCalculatorState
-    calculatorResult: iCalculatorResultMT;
+export class CalculatorResponseMT {
+    calculatorState: CalculatorState = new CalculatorState;
+    calculatorResult: CalculatorResultMT = new CalculatorResultMT;
 }
 
-export interface iCalculatorResponseST{
-    calculatorResult: iCalculatorResultST;
+export class CalculatorResponseST {
+    calculatorResult: CalculatorResultST = new CalculatorResultST;
 }

@@ -1,9 +1,9 @@
-import { iCalculatorState } from "./calculator-state"
+import { CalculatorState } from "./calculator-state"
 
-export interface iCalculatorRequest{
-    buttonClicked : string;
-    state : iCalculatorState;
+export class CalculatorRequestMT{
+    buttonClicked : string = "";
+    state : CalculatorState|null = null;
 }
-export interface iCalculatorRequestST{
-    buttonClicked : string;
+export class CalculatorRequestST{
+    buttonClicked : string= "";
 }

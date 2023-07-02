@@ -1,5 +1,5 @@
-export interface iCalculatorState { 
-    term: string;
-    currentOperation: string;
-    terms: string[];
+export class CalculatorState { 
+    term: string = "";
+    currentOperation: string = "";
+    terms: string[]= new Array();
 }

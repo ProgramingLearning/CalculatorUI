@@ -1,11 +1,9 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { HostListener, Component } from '@angular/core';
 import { CalculatorApiService } from '../calculator-api.service';
-import { iCalculatorState } from '../calculator-state';
-import { iCalculatorResultST, iCalculatorResultMT } from '../result';
-import { iCalculatorResponseMT, iCalculatorResponseST } from '../calculator-response';
-import { iCalculatorRequest, iCalculatorRequestST } from '../calculator-request';
-// import { iCalculatorResult } from '../result';
+import { CalculatorState } from '../calculator-state';
+import { CalculatorResultST, CalculatorResultMT } from '../calculator-result';
+import { CalculatorResponseMT, CalculatorResponseST } from '../calculator-response';
+import { CalculatorRequestMT, CalculatorRequestST } from '../calculator-request';
 
 @Component({
   selector: 'app-calculator',
@@ -20,7 +18,7 @@ export class CalculatorComponent {
   input: string = '';
   output: string = '';
   opFlag: boolean = false;
-  state : iCalculatorState = {}as any;
+  state: CalculatorState | null = null;
 
   constructor(private apiService: CalculatorApiService) { }
 
@@ -34,12 +32,12 @@ export class CalculatorComponent {
 
   private CalculateMT(op: string) {
     this.opFlag = true;
-    const request: iCalculatorRequest = {
+    const request: CalculatorRequestMT = {
       state: this.state,
       buttonClicked: `${this.input}_${op}`
     };
     this.apiService.calculateMultipleTerm(request).subscribe(
-      (response: iCalculatorResponseMT) => {
+      (response: CalculatorResponseMT) => {
         this.state = response.calculatorState;
         if (response.calculatorResult) {
           console.log(response.calculatorResult);
@@ -51,25 +49,25 @@ export class CalculatorComponent {
 
   pressSTOperation(op: string) {
     this.opFlag = true;
-    const request: iCalculatorRequestST = {
-      buttonClicked : `${this.input}_${op}`
+    const request: CalculatorRequestST = {
+      buttonClicked: `${this.input}_${op}`
     };
     this.apiService.calculateSingleTerm(request).subscribe(
-      (response: iCalculatorResponseST) => {
+      (response: CalculatorResponseST) => {
         this.handleResultST(response.calculatorResult);
       },
     );
   }
 
-  private handleResultMT(result: iCalculatorResultMT) {
+  private handleResultMT(result: CalculatorResultMT) {
     this.output = result.message;
     this.input = result.value;
   }
-  private handleResultST(result: iCalculatorResultST) {
+  private handleResultST(result: CalculatorResultST) {
     this.output = result.message;
     this.input = result.value;
   }
-  
+
   pressNum(num: string) {
     if (this.opFlag) {
       this.input = '';
@@ -85,7 +83,7 @@ export class CalculatorComponent {
     }
   }
 
-  pressCS() {
+  pressChangeSign() {
     if (this.input.includes('-')) {
       this.input = this.input.slice(1);
     }
@@ -107,9 +105,10 @@ export class CalculatorComponent {
     }
   }
 
-  pressDelete() {
+  pressClearEverything() {
     this.input = '0';
     this.output = '';
+    this.state = null;
   }
 
   pressClear() {
@@ -158,19 +157,19 @@ export class CalculatorComponent {
   }
   @HostListener('window:keydown.+', ['$event'])
   onplusKeyPress(event: KeyboardEvent) {
-    this.pressMTOperation('+');
+    this.pressMTOperation('Sum');
   }
   @HostListener('window:keydown.-', ['$event'])
   onMinusKeyPress(event: KeyboardEvent) {
-    this.pressMTOperation('-');
+    this.pressMTOperation('Subtract');
   }
   @HostListener('window:keydown./', ['$event'])
   onDivKeyPress(event: KeyboardEvent) {
-    this.pressMTOperation('/');
+    this.pressMTOperation('Divide');
   }
   @HostListener('window:keydown.*', ['$event'])
   onMultKeyPress(event: KeyboardEvent) {
-    this.pressMTOperation('*');
+    this.pressMTOperation('Multiply');
   }
   @HostListener('window:keydown.Enter', ['$event'])
   onEnterKeyPress(event: KeyboardEvent) {
@@ -182,11 +181,6 @@ export class CalculatorComponent {
   }
   @HostListener('window:keydown.backspace', ['$event'])
   onDelKeyPress(event: KeyboardEvent) {
-    this.pressDelete();
+    this.pressClear();
   }
 }
-
-
-
-
-
